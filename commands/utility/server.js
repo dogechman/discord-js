@@ -4,7 +4,7 @@ module.exports = {
 	async execute(interaction) {
 		// interaction.guild is the object representing the Guild in which the command was run
 		await interaction.reply(
-			`This server is ${interaction.guild.name} and has ${interaction.guild.memberCount} members + ${interaction.guild.data}.`,
+			`This server is ${interaction.guild.name} and has ${interaction.guild.memberCount} members  (${interaction.guild.data}).`,
 		);
 	},
 };
