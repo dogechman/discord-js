@@ -1,7 +1,14 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const { token } = require('./config.json');
+
+const token = process.env.DISCORD_TOKEN;
+
+if (!token) {
+	console.error('DISCORD_TOKEN environment variable is required');
+	process.exit(1);
+}
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
@@ -16,7 +23,6 @@ for (const folder of commandFolders) {
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
@@ -49,3 +55,5 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 	}
 });
+
+client.login(token);
